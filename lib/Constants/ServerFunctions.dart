@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 class ServerFunctions {
 
   fetchData({String? url}) async {
+    print("Url-------$url");
     try {
       var response = await http.get(
         Uri.parse(url!),
