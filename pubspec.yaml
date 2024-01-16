@@ -38,6 +38,7 @@ dependencies:
   http_client: ^1.4.1
   sizer: ^2.0.15
   http: ^0.13.1
+
   mongo_dart: ^0.10.0
 
 

@@ -32,28 +32,50 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    fetchUsers();
+    //
     dbconnection.getConnection();
+    // fetchUsers();
+    // fetchUsersDetails();
+    myFunction();
     super.initState();
   }
 
 
-    fetchUsers() async {
-    var response = await serverFunctions.fetchData(
-      url: "http://localhost:3000/users",
-      // data: data,
-    );
-    print("response----Users-----${response}");
-    UserModel user = userModelFromJson(response);
-    if (user != null) {
-      Iterable itemsJson = json.decode(response.body);
-      List<UserModel> items = itemsJson.map((item) => UserModel.fromJson(item)).toList();
-      print("Users-----${items}");
-      return items;
-    } else {
-      throw Exception('Failed to load items');
-    }
+myFunction() {
+    var data = {};
+    http.post(Uri.parse(serverhealth))
+        .then((response) => print(response.body))
+        .catchError((error) => print(error));
   }
+
+
+    fetchUsers() async {
+    var response = dbconnection.getHealthData();
+    // await serverFunctions.fetchData(
+    //   url: "http://localhost:3000/users",
+    //   // data: data,
+    // );
+    print("response----Users-----${response}");
+    // UserModel user = userModelFromJson(response);
+    // if (user != null) {
+    //   Iterable itemsJson = json.decode(response.body);
+    //   List<UserModel> items = itemsJson.map((item) => UserModel.fromJson(item)).toList();
+    //   print("Users-----${items}");
+    //   return items;
+    // } else {
+    //   throw Exception('Failed to load items');
+    // }
+  }
+
+  // Future<List<Map<String, dynamic>>> fetchUsersDetails() async {
+  //   final response = await http.get(Uri.parse('http://localhost:3000/users'));
+  //   print("Details----response");
+  //   if (response.statusCode == 200) {
+  //     return List<Map<String, dynamic>>.from(json.decode(response.body));
+  //   } else {
+  //     throw Exception('Failed to load users');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
