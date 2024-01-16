@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:globalhealth/Constants/ServerFunctions.dart';
 import 'package:globalhealth/Constants/dbConnection.dart';
 import 'package:globalhealth/Pages/getUserList.dart';
+import 'package:globalhealth/drawer.dart';
 import 'package:http/http.dart' as http;
 import '../APIs/Apis.dart';
 import '../Models/UserModel.dart';
@@ -38,13 +39,13 @@ class _HomePageState extends State<HomePage> {
 
 
     fetchUsers() async {
-    // var response = await serverFunctions.fetchData(
-    //   url: "http://localhost:3000/users",
-    //   // data: data,
-    // );
-    final response = await http.get(Uri.parse('http://localhost:3000/users'));
+    var response = await serverFunctions.fetchData(
+      url: "http://localhost:3000/users",
+      // data: data,
+    );
     print("response----Users-----${response}");
-    if (response.statusCode == 200) {
+    UserModel user = userModelFromJson(response);
+    if (user != null) {
       Iterable itemsJson = json.decode(response.body);
       List<UserModel> items = itemsJson.map((item) => UserModel.fromJson(item)).toList();
       print("Users-----${items}");
@@ -61,15 +62,16 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text("Users"),
       ),
+      drawer: AppDrawer(),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'Check Server Status',
-            ),
+            // const Text(
+            //   'Check Server Status',
+            // ),
             // Text(
             //   '',
             //   style: Theme.of(context).textTheme.headlineMedium,
@@ -91,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                     // print("response-----$response");
                     // fetchUsers();
                   },
-                  child: Text('Check Server Status'),
+                  child: Text('Check Server Status', style: TextStyle(fontSize: 18),),
                 ),
               ),
             ),
@@ -115,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                         context,
                         MaterialPageRoute(builder: (context) => GetUsersList()));
                   },
-                  child: Text('View Users'),
+                  child: Text('View Users', style: TextStyle(fontSize: 18),),
                 ),
               ),
             )

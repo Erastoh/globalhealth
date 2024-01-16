@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:globalhealth/Constants/ServerFunctions.dart';
 import 'package:globalhealth/Constants/dbConnection.dart';
+import 'package:globalhealth/Pages/EditSpecificDetails.dart';
 import 'package:globalhealth/Pages/Userspecificdetails.dart';
 import 'package:http/http.dart' as http;
 import '../APIs/Apis.dart';
