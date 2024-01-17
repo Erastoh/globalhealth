@@ -40,6 +40,19 @@ class ServerFunctions {
     }
   }
 
+  adduserData({Map<String, String>? data, String? url}) async {
+    print("Url-------$url");
+    try {
+      var response = await http.post(
+        Uri.parse(url!),
+        body: data,
+      );
+      return response.body;
+    } catch (e) {
+      // printError(e);
+    }
+  }
+
 
   crudfunction({ Map<String, String>? data, String? url}) async {
     try {

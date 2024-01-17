@@ -6,6 +6,7 @@ import 'package:globalhealth/Constants/ServerFunctions.dart';
 import 'package:globalhealth/Constants/dbConnection.dart';
 import 'package:globalhealth/Pages/EditSpecificDetails.dart';
 import 'package:globalhealth/Pages/Userspecificdetails.dart';
+import 'package:globalhealth/Pages/addNewUser.dart';
 import 'package:http/http.dart' as http;
 import '../APIs/Apis.dart';
 import '../Models/UserModel.dart';
@@ -172,11 +173,15 @@ class _GetUsersListState extends State<GetUsersList> {
 
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddNewUser()));
+        },
+        tooltip: 'add',
+        child: const Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

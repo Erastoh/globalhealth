@@ -7,15 +7,15 @@ import 'package:globalhealth/Models/UserModel.dart';
 import 'package:globalhealth/Pages/getUserList.dart';
 
 ServerFunctions serverFunctions = new ServerFunctions();
-class EditSpecificDetails extends StatefulWidget {
-  final UserModel? userdetails;
-  const EditSpecificDetails({super.key, this.userdetails});
+class AddNewUser extends StatefulWidget {
+
+  const AddNewUser({super.key});
 
   @override
-  State<EditSpecificDetails> createState() => _EditSpecificDetailsState();
+  State<AddNewUser> createState() => _AddNewUserState();
 }
 
-class _EditSpecificDetailsState extends State<EditSpecificDetails> {
+class _AddNewUserState extends State<AddNewUser> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _secondnameController = TextEditingController();
@@ -24,50 +24,50 @@ class _EditSpecificDetailsState extends State<EditSpecificDetails> {
   @override
   void initState() {
     // TODO: implement initState
-    values();
     super.initState();
-  }
-  values(){
-    setState(() {
-      _firstnameController.text = widget.userdetails!.firstName!;
-      _secondnameController.text = widget.userdetails!.lastName!;
-      _emailController.text = widget.userdetails!.email!;
-    });
-
   }
 
   bool loadinghit = false;
-  updateUser(String id) async{
+  addNewUser() async{
     setState(() {
       loadinghit = true;
     });
     var data = {
-      "firstName": _firstnameController.text,
-      "lastName": _secondnameController.text,
-      "email": _emailController.text
+      "firstName": "testingrzzr",
+      "lastName":"namerzzr",
+      "email":"testrzzr@gmail.com"
     };
-    var response = await serverFunctions.updateData(
-      url: "http://10.0.2.2:3000/users/$id",
+
+    // var data = {
+    //   "firstName": _firstnameController.text,
+    //   "lastName": _secondnameController.text,
+    //   "email": _emailController.text
+    // };
+    var response = await serverFunctions.adduserData(
+      url: "http://10.0.2.2:3000/users",
       data: data,
     );
     var message = jsonDecode(response);
-    print("response----Users-----${message}");
-    if(message["_id"] == "$id"){
+    print("response----Users-----${message}---errr ${message["error"]}");
+    if(message["_id"] == "id"){
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => GetUsersList()));
       Fluttertoast.showToast(
-          msg: "User Update Successful",
+          msg: message["message"],
           toastLength: Toast.LENGTH_SHORT,
           backgroundColor: Colors.green,
           gravity: ToastGravity.BOTTOM);
 
-    }else{
+    }else if(message["error"].Contains("User validation failed")){
       Fluttertoast.showToast(
-          msg: "Failed to Update",
+          msg: "Failed to Add",
           toastLength: Toast.LENGTH_SHORT,
           backgroundColor: Colors.green,
           gravity: ToastGravity.BOTTOM);
+      setState(() {
+        loadinghit = false;
+      });
     }
 
   }
@@ -77,7 +77,7 @@ class _EditSpecificDetailsState extends State<EditSpecificDetails> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Edit Users"),
+        title: Text("Add User"),
       ),
       body: ListView(
         children: [
@@ -182,13 +182,13 @@ class _EditSpecificDetailsState extends State<EditSpecificDetails> {
               width: MediaQuery.of(context).size.width,
               child: TextButton(
                 style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
                 ),
                 onPressed: () {
-                 updateUser(widget.userdetails!.sId!);
+                  addNewUser();
                 },
                 child: loadinghit == false ?
-                Text('Update', style: TextStyle(fontSize: 20),): Center(child: CircularProgressIndicator()),
+                Text('Submit', style: TextStyle(fontSize: 20),): Center(child: CircularProgressIndicator()),
               ),
             ),
           )

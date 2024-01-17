@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:globalhealth/Constants/ServerFunctions.dart';
 import 'package:globalhealth/Models/UserModel.dart';
 import 'package:globalhealth/Pages/Homepage.dart';
+import 'package:globalhealth/Pages/getUserList.dart';
 
 ServerFunctions serverFunctions = new ServerFunctions();
 class UserSpecificDetails extends StatefulWidget {
@@ -36,7 +37,7 @@ class _UserSpecificDetailsState extends State<UserSpecificDetails> {
           gravity: ToastGravity.BOTTOM);
       Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()));
+          MaterialPageRoute(builder: (context) => GetUsersList()));
 
     }else if(message["error"] == "User not found"){
       Fluttertoast.showToast(
