@@ -44,7 +44,9 @@ class _AddNewUserState extends State<AddNewUser> {
     );
     var message = jsonDecode(response);
     print("response----Users-----${message}---errr ${message["error"]}");
-    if(message["_id"] == "id"){
+
+    // print("${response.status}");
+    if(message["status"] == true){
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => GetUsersList()));
@@ -53,8 +55,7 @@ class _AddNewUserState extends State<AddNewUser> {
           toastLength: Toast.LENGTH_SHORT,
           backgroundColor: Colors.green,
           gravity: ToastGravity.BOTTOM);
-
-    }else if(message["error"] == "User validation failed"){
+    }else{
       Fluttertoast.showToast(
           msg: "User validation failed",
           toastLength: Toast.LENGTH_SHORT,
