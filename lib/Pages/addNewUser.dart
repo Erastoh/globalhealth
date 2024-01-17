@@ -59,9 +59,9 @@ class _AddNewUserState extends State<AddNewUser> {
           backgroundColor: Colors.green,
           gravity: ToastGravity.BOTTOM);
 
-    }else if(message["error"].Contains("User validation failed")){
+    }else if(message["error"] == "User validation failed"){
       Fluttertoast.showToast(
-          msg: "Failed to Add",
+          msg: "User validation failed",
           toastLength: Toast.LENGTH_SHORT,
           backgroundColor: Colors.green,
           gravity: ToastGravity.BOTTOM);
