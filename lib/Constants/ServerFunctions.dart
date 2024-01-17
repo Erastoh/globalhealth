@@ -15,6 +15,32 @@ class ServerFunctions {
     }
   }
 
+  deleteData({String? url}) async {
+    print("Url-------$url");
+    try {
+      var response = await http.delete(
+        Uri.parse(url!),
+      );
+      return response.body;
+    } catch (e) {
+      // printError(e);
+    }
+  }
+
+  updateData({Map<String, String>? data, String? url}) async {
+    print("Url-------$url");
+    try {
+      var response = await http.put(
+        Uri.parse(url!),
+        body: data,
+      );
+      return response.body;
+    } catch (e) {
+      // printError(e);
+    }
+  }
+
+
   crudfunction({ Map<String, String>? data, String? url}) async {
     try {
       var response = await http.get(

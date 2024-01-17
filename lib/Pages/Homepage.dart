@@ -34,37 +34,23 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     //
     dbconnection.getConnection();
-    // fetchUsers();
-    // fetchUsersDetails();
-    myFunction();
     super.initState();
   }
 
 
-myFunction() {
-    var data = {};
-    http.post(Uri.parse(serverhealth))
-        .then((response) => print(response.body))
-        .catchError((error) => print(error));
-  }
 
-
-    fetchUsers() async {
-    var response = dbconnection.getHealthData();
-    // await serverFunctions.fetchData(
-    //   url: "http://localhost:3000/users",
-    //   // data: data,
-    // );
-    print("response----Users-----${response}");
-    // UserModel user = userModelFromJson(response);
-    // if (user != null) {
-    //   Iterable itemsJson = json.decode(response.body);
-    //   List<UserModel> items = itemsJson.map((item) => UserModel.fromJson(item)).toList();
-    //   print("Users-----${items}");
-    //   return items;
-    // } else {
-    //   throw Exception('Failed to load items');
-    // }
+  String? serverHealth = '';
+  fetchServerStatus() async {
+    var response = await serverFunctions.fetchData(
+      url: "http://10.0.2.2:3000/api/health",
+      // data: data,
+    );
+    print("response----health-----${response}");
+    var mainrespo = jsonDecode(response);
+    serverHealth = mainrespo["message"];
+    setState(() {
+      serverHealth = mainrespo["message"];
+    });
   }
 
   // Future<List<Map<String, dynamic>>> fetchUsersDetails() async {
@@ -91,13 +77,9 @@ myFunction() {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // const Text(
-            //   'Check Server Status',
-            // ),
-            // Text(
-            //   '',
-            //   style: Theme.of(context).textTheme.headlineMedium,
-            // ),
+            serverHealth == '' ? Container() : Text(
+              '$serverHealth', style: TextStyle(fontSize: 22, color: Colors.green, fontWeight: FontWeight.bold),
+            ),
 
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -110,10 +92,7 @@ myFunction() {
                     foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
                   ),
                   onPressed: () {
-                    fetchUsers();
-                    // var response = dbconnection.getConnection();
-                    // print("response-----$response");
-                    // fetchUsers();
+                    fetchServerStatus();
                   },
                   child: Text('Check Server Status', style: TextStyle(fontSize: 18),),
                 ),
@@ -131,10 +110,6 @@ myFunction() {
                     foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
                   ),
                   onPressed: () {
-                    fetchUsers();
-                    // var response = dbconnection.getConnection();
-                    // print("response-----$response");
-                    // fetchUsers();
                     Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => GetUsersList()));

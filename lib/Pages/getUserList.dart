@@ -34,36 +34,23 @@ class _GetUsersListState extends State<GetUsersList> {
   List<UserModel>? items;
 
   bool loadingdata = false;
-  var responsebody = [{"_id":"65a6382a74efb95e4780237b",
-    "firstName":"testing","lastName":"name","email":"test@gmail.com","__v":0},
-    {"_id":"65a63a58bd9ee7ab35c00a4d","firstName":"testingrrr",
-      "lastName":"namerrr","email":"testrrr@gmail.com","__v":0}];
-
+  List<dynamic>? decodedList;
 
   fetchUsers() async {
-
+    // var response = dbconnection.getHealthData();
+    var response = await serverFunctions.fetchData(
+      url: "http://10.0.2.2:3000/users",
+      // data: data,
+    );
+    print("response----Users-----${response}");
     setState(() {
+      decodedList = json.decode(response);
       loadingdata = true;
     });
-    // var response = await serverFunctions.fetchData(
-    //   url: "http://localhost:3000/users",
-    //   // data: data,
-    // );
-    final response = await http.get(Uri.parse('http://localhost:3000/users'));
-    print("response----Users-----${response}");
-    // if (response.statusCode == 200) {
-    //   Iterable itemsJson = json.decode(responsebody);
-      items = responsebody.map((item) => UserModel.fromJson(item)).toList();
-      print("Users-----${items}");
-      setState(() {
-        loadingdata = false;
-      });
-      return items;
-    // } else {
-    //   setState(() {
-    //     loadingdata = true;
-    //   });
-    //   throw Exception('Failed to load items');
+
+    // for (var item in decodedList) {
+    //   print(item["_id"]);
+    //   print(item["firstName"]);
     // }
   }
 
@@ -72,12 +59,7 @@ class _GetUsersListState extends State<GetUsersList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text("All Users"),
       ),
       body: Center(
@@ -92,17 +74,17 @@ class _GetUsersListState extends State<GetUsersList> {
               ListView.builder(
               shrinkWrap: true,
               physics: ScrollPhysics(),
-              itemCount: responsebody.length,
+              itemCount: decodedList!.length,
               itemBuilder: (BuildContext context, int index) {
               return
                   InkWell(
                   onTap: (){
                     // da.Data? job = parseJob(list[index].toString());
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => UserSpecificDetails(
-                            )));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => UserSpecificDetails(
+                    //         )));
                   },
                   child:
                   Padding(
@@ -110,40 +92,45 @@ class _GetUsersListState extends State<GetUsersList> {
                     child: Card(
                       shadowColor: Colors.white,
                       child: ListTile(
-                        title: Row(
-                          children: [
-                            Text(
-                              'FirstName:',
-                            ),
-                            Spacer(),
-                            Text(responsebody![index].length.toString(),
-                            ),
-                            SizedBox(width: 2,),
-                          ],
-                        ),
+                        // title: ,
                         subtitle:
                         Column(
                           children: [
                             Row(
                               children: [
+                                Text(
+                                  'FirstName:',
+                                ),
+                                Spacer(),
+                                Text(decodedList![index]["firstName"],
+                                ),
+                                SizedBox(width: 2,),
+
+                              ],
+                            ),
+                            // Divider(),
+                            Row(
+                              children: [
+                                Divider(),
 
                                 const Text(
                                   'LastName:',
                                 ),
                                 Spacer(),
-                                Text(responsebody![index]!.length.toString(),
+                                Text(decodedList![index]["lastName"],
                                 ),
                                 SizedBox(width: 2,),
                               ],
                             ),
                             SizedBox(height: 5,),
+                            // Divider(),
                             Row(
                               children: [
                                 const Text(
                                   'Email:',
                                 ),
                                 Spacer(),
-                                Text(responsebody![index]!.length.toString(),
+                                Text(decodedList![index]["email"],
                                 ),
                                 SizedBox(width: 2,),
                               ],
@@ -154,17 +141,21 @@ class _GetUsersListState extends State<GetUsersList> {
                           children: [
                             InkWell(
                               onTap:(){
+                                var details = jsonEncode(decodedList![index]);
+                                UserModel user = userModelFromJson(details);
                                 Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => UserSpecificDetails()));
+                                    MaterialPageRoute(builder: (context) => UserSpecificDetails(userdetails: user)));
                                 },
                                 child: Container(child: Icon(Icons.remove_red_eye))),
                             SizedBox(height: 6,),
                             InkWell(
                                 onTap:(){
+                                  var details = jsonEncode(decodedList![index]);
+                                  UserModel user = userModelFromJson(details);
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => EditSpecificDetails()));
+                                      MaterialPageRoute(builder: (context) => EditSpecificDetails(userdetails: user)));
                                 },
                                 child: Icon(Icons.edit)),
                             // Icon(Icons.delete_forever),

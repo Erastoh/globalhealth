@@ -18,10 +18,12 @@ class DBConnection {
     return _instance;
   }
 
+
   Future<Db> getConnection() async{
       try {
-        _db = Db('mongodb://10.0.2.2:3000');
-        // final Db db = Db('mongodb://your_server_address:your_port');
+        _db = await Db.create('mongodb://10.0.2.2');
+        _db = Db('mongodb://10.0.2.2');
+        // final Db db = Db('mongodb://your_server_address:your_port 192.168.0.101');
         await _db!.open();
         print("response db success----$_db");
       } catch(e){
