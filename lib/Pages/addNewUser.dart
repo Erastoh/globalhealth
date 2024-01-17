@@ -32,17 +32,17 @@ class _AddNewUserState extends State<AddNewUser> {
     setState(() {
       loadinghit = true;
     });
-    var data = {
-      "firstName": "testingrzzr",
-      "lastName":"namerzzr",
-      "email":"testrzzr@gmail.com"
-    };
-
     // var data = {
-    //   "firstName": _firstnameController.text,
-    //   "lastName": _secondnameController.text,
-    //   "email": _emailController.text
+    //   "firstName": "testingrzzr",
+    //   "lastName":"namerzzr",
+    //   "email":"testrzzr@gmail.com"
     // };
+
+    var data = {
+      "firstName": _firstnameController.text,
+      "lastName": _secondnameController.text,
+      "email": _emailController.text
+    };
     var response = await serverFunctions.adduserData(
       url: "http://10.0.2.2:3000/users",
       data: data,
