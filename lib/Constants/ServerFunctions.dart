@@ -41,12 +41,13 @@ class ServerFunctions {
   }
 
   adduserData({Map<String, String>? data, String? url}) async {
-    print("Url-------$url");
+    print("Url-------$url----$data");
     try {
       var response = await http.post(
         Uri.parse(url!),
         body: data,
       );
+
       return response.body;
     } catch (e) {
       // printError(e);

@@ -32,11 +32,6 @@ class _AddNewUserState extends State<AddNewUser> {
     setState(() {
       loadinghit = true;
     });
-    // var data = {
-    //   "firstName": "testingrzzr",
-    //   "lastName":"namerzzr",
-    //   "email":"testrzzr@gmail.com"
-    // };
 
     var data = {
       "firstName": _firstnameController.text,
